@@ -1,0 +1,388 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNyNM1klTar2xX/x4tg3COa",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/rajendradayma/Credit-Card-Fraud-Detection/blob/main/AI%20fitness%20Chatbots\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "!pip install gradio\n",
+        "import gradio\n",
+        "# Install the youtube_search module\n",
+        "!pip install youtube-search-python\n",
+        "!pip install pytube\n",
+        "!pip install youtube-search\n",
+        "from youtube_search import YoutubeSearch\n",
+        "from gradio import components\n"
+      ],
+      "metadata": {
+        "id": "6gMqh5z0AOJd",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "1fb0444c-7747-4ffc-f344-9e406e0b1881"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: gradio in /usr/local/lib/python3.10/dist-packages (4.19.0)\n",
+            "Requirement already satisfied: aiofiles<24.0,>=22.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (23.2.1)\n",
+            "Requirement already satisfied: altair<6.0,>=4.2.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (4.2.2)\n",
+            "Requirement already satisfied: fastapi in /usr/local/lib/python3.10/dist-packages (from gradio) (0.109.2)\n",
+            "Requirement already satisfied: ffmpy in /usr/local/lib/python3.10/dist-packages (from gradio) (0.3.2)\n",
+            "Requirement already satisfied: gradio-client==0.10.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.10.0)\n",
+            "Requirement already satisfied: httpx in /usr/local/lib/python3.10/dist-packages (from gradio) (0.26.0)\n",
+            "Requirement already satisfied: huggingface-hub>=0.19.3 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.20.3)\n",
+            "Requirement already satisfied: importlib-resources<7.0,>=1.3 in /usr/local/lib/python3.10/dist-packages (from gradio) (6.1.1)\n",
+            "Requirement already satisfied: jinja2<4.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (3.1.3)\n",
+            "Requirement already satisfied: markupsafe~=2.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (2.1.5)\n",
+            "Requirement already satisfied: matplotlib~=3.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (3.7.1)\n",
+            "Requirement already satisfied: numpy~=1.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (1.25.2)\n",
+            "Requirement already satisfied: orjson~=3.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (3.9.14)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.10/dist-packages (from gradio) (23.2)\n",
+            "Requirement already satisfied: pandas<3.0,>=1.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (1.5.3)\n",
+            "Requirement already satisfied: pillow<11.0,>=8.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (9.4.0)\n",
+            "Requirement already satisfied: pydantic>=2.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (2.6.1)\n",
+            "Requirement already satisfied: pydub in /usr/local/lib/python3.10/dist-packages (from gradio) (0.25.1)\n",
+            "Requirement already satisfied: python-multipart in /usr/local/lib/python3.10/dist-packages (from gradio) (0.0.9)\n",
+            "Requirement already satisfied: pyyaml<7.0,>=5.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (6.0.1)\n",
+            "Requirement already satisfied: ruff>=0.1.7 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.2.1)\n",
+            "Requirement already satisfied: semantic-version~=2.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (2.10.0)\n",
+            "Requirement already satisfied: tomlkit==0.12.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.12.0)\n",
+            "Requirement already satisfied: typer[all]<1.0,>=0.9 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.9.0)\n",
+            "Requirement already satisfied: typing-extensions~=4.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (4.9.0)\n",
+            "Requirement already satisfied: uvicorn>=0.14.0 in /usr/local/lib/python3.10/dist-packages (from gradio) (0.27.1)\n",
+            "Requirement already satisfied: fsspec in /usr/local/lib/python3.10/dist-packages (from gradio-client==0.10.0->gradio) (2023.6.0)\n",
+            "Requirement already satisfied: websockets<12.0,>=10.0 in /usr/local/lib/python3.10/dist-packages (from gradio-client==0.10.0->gradio) (11.0.3)\n",
+            "Requirement already satisfied: entrypoints in /usr/local/lib/python3.10/dist-packages (from altair<6.0,>=4.2.0->gradio) (0.4)\n",
+            "Requirement already satisfied: jsonschema>=3.0 in /usr/local/lib/python3.10/dist-packages (from altair<6.0,>=4.2.0->gradio) (4.19.2)\n",
+            "Requirement already satisfied: toolz in /usr/local/lib/python3.10/dist-packages (from altair<6.0,>=4.2.0->gradio) (0.12.1)\n",
+            "Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from huggingface-hub>=0.19.3->gradio) (3.13.1)\n",
+            "Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from huggingface-hub>=0.19.3->gradio) (2.31.0)\n",
+            "Requirement already satisfied: tqdm>=4.42.1 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub>=0.19.3->gradio) (4.66.2)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (1.2.0)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (4.48.1)\n",
+            "Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (1.4.5)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (3.1.1)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.10/dist-packages (from matplotlib~=3.0->gradio) (2.8.2)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas<3.0,>=1.0->gradio) (2023.4)\n",
+            "Requirement already satisfied: annotated-types>=0.4.0 in /usr/local/lib/python3.10/dist-packages (from pydantic>=2.0->gradio) (0.6.0)\n",
+            "Requirement already satisfied: pydantic-core==2.16.2 in /usr/local/lib/python3.10/dist-packages (from pydantic>=2.0->gradio) (2.16.2)\n",
+            "Requirement already satisfied: click<9.0.0,>=7.1.1 in /usr/local/lib/python3.10/dist-packages (from typer[all]<1.0,>=0.9->gradio) (8.1.7)\n",
+            "Requirement already satisfied: colorama<0.5.0,>=0.4.3 in /usr/local/lib/python3.10/dist-packages (from typer[all]<1.0,>=0.9->gradio) (0.4.6)\n",
+            "Requirement already satisfied: shellingham<2.0.0,>=1.3.0 in /usr/local/lib/python3.10/dist-packages (from typer[all]<1.0,>=0.9->gradio) (1.5.4)\n",
+            "Requirement already satisfied: rich<14.0.0,>=10.11.0 in /usr/local/lib/python3.10/dist-packages (from typer[all]<1.0,>=0.9->gradio) (13.7.0)\n",
+            "Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.10/dist-packages (from uvicorn>=0.14.0->gradio) (0.14.0)\n",
+            "Requirement already satisfied: starlette<0.37.0,>=0.36.3 in /usr/local/lib/python3.10/dist-packages (from fastapi->gradio) (0.36.3)\n",
+            "Requirement already satisfied: anyio in /usr/local/lib/python3.10/dist-packages (from httpx->gradio) (3.7.1)\n",
+            "Requirement already satisfied: certifi in /usr/local/lib/python3.10/dist-packages (from httpx->gradio) (2024.2.2)\n",
+            "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.10/dist-packages (from httpx->gradio) (1.0.3)\n",
+            "Requirement already satisfied: idna in /usr/local/lib/python3.10/dist-packages (from httpx->gradio) (3.6)\n",
+            "Requirement already satisfied: sniffio in /usr/local/lib/python3.10/dist-packages (from httpx->gradio) (1.3.0)\n",
+            "Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=3.0->altair<6.0,>=4.2.0->gradio) (23.2.0)\n",
+            "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=3.0->altair<6.0,>=4.2.0->gradio) (2023.12.1)\n",
+            "Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=3.0->altair<6.0,>=4.2.0->gradio) (0.33.0)\n",
+            "Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=3.0->altair<6.0,>=4.2.0->gradio) (0.17.1)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.7->matplotlib~=3.0->gradio) (1.16.0)\n",
+            "Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/local/lib/python3.10/dist-packages (from rich<14.0.0,>=10.11.0->typer[all]<1.0,>=0.9->gradio) (3.0.0)\n",
+            "Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/local/lib/python3.10/dist-packages (from rich<14.0.0,>=10.11.0->typer[all]<1.0,>=0.9->gradio) (2.16.1)\n",
+            "Requirement already satisfied: exceptiongroup in /usr/local/lib/python3.10/dist-packages (from anyio->httpx->gradio) (1.2.0)\n",
+            "Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface-hub>=0.19.3->gradio) (3.3.2)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->huggingface-hub>=0.19.3->gradio) (2.0.7)\n",
+            "Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.10/dist-packages (from markdown-it-py>=2.2.0->rich<14.0.0,>=10.11.0->typer[all]<1.0,>=0.9->gradio) (0.1.2)\n",
+            "Requirement already satisfied: youtube-search-python in /usr/local/lib/python3.10/dist-packages (1.6.6)\n",
+            "Requirement already satisfied: httpx>=0.14.2 in /usr/local/lib/python3.10/dist-packages (from youtube-search-python) (0.26.0)\n",
+            "Requirement already satisfied: anyio in /usr/local/lib/python3.10/dist-packages (from httpx>=0.14.2->youtube-search-python) (3.7.1)\n",
+            "Requirement already satisfied: certifi in /usr/local/lib/python3.10/dist-packages (from httpx>=0.14.2->youtube-search-python) (2024.2.2)\n",
+            "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.10/dist-packages (from httpx>=0.14.2->youtube-search-python) (1.0.3)\n",
+            "Requirement already satisfied: idna in /usr/local/lib/python3.10/dist-packages (from httpx>=0.14.2->youtube-search-python) (3.6)\n",
+            "Requirement already satisfied: sniffio in /usr/local/lib/python3.10/dist-packages (from httpx>=0.14.2->youtube-search-python) (1.3.0)\n",
+            "Requirement already satisfied: h11<0.15,>=0.13 in /usr/local/lib/python3.10/dist-packages (from httpcore==1.*->httpx>=0.14.2->youtube-search-python) (0.14.0)\n",
+            "Requirement already satisfied: exceptiongroup in /usr/local/lib/python3.10/dist-packages (from anyio->httpx>=0.14.2->youtube-search-python) (1.2.0)\n",
+            "Requirement already satisfied: pytube in /usr/local/lib/python3.10/dist-packages (15.0.0)\n",
+            "Collecting youtube-search\n",
+            "  Downloading youtube_search-2.1.2-py3-none-any.whl (3.4 kB)\n",
+            "Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from youtube-search) (2.31.0)\n",
+            "Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->youtube-search) (3.3.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->youtube-search) (3.6)\n",
+            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->youtube-search) (2.0.7)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->youtube-search) (2024.2.2)\n",
+            "Installing collected packages: youtube-search\n",
+            "Successfully installed youtube-search-2.1.2\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install openai\n",
+        "import openai"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vlOWDObKzs5x",
+        "outputId": "4a2dba9b-0612-43f2-b2b1-23e04ae84ffa"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: openai in /usr/local/lib/python3.10/dist-packages (1.12.0)\n",
+            "Requirement already satisfied: anyio<5,>=3.5.0 in /usr/local/lib/python3.10/dist-packages (from openai) (3.7.1)\n",
+            "Requirement already satisfied: distro<2,>=1.7.0 in /usr/lib/python3/dist-packages (from openai) (1.7.0)\n",
+            "Requirement already satisfied: httpx<1,>=0.23.0 in /usr/local/lib/python3.10/dist-packages (from openai) (0.26.0)\n",
+            "Requirement already satisfied: pydantic<3,>=1.9.0 in /usr/local/lib/python3.10/dist-packages (from openai) (2.6.1)\n",
+            "Requirement already satisfied: sniffio in /usr/local/lib/python3.10/dist-packages (from openai) (1.3.0)\n",
+            "Requirement already satisfied: tqdm>4 in /usr/local/lib/python3.10/dist-packages (from openai) (4.66.2)\n",
+            "Requirement already satisfied: typing-extensions<5,>=4.7 in /usr/local/lib/python3.10/dist-packages (from openai) (4.9.0)\n",
+            "Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.10/dist-packages (from anyio<5,>=3.5.0->openai) (3.6)\n",
+            "Requirement already satisfied: exceptiongroup in /usr/local/lib/python3.10/dist-packages (from anyio<5,>=3.5.0->openai) (1.2.0)\n",
+            "Requirement already satisfied: certifi in /usr/local/lib/python3.10/dist-packages (from httpx<1,>=0.23.0->openai) (2024.2.2)\n",
+            "Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.10/dist-packages (from httpx<1,>=0.23.0->openai) (1.0.3)\n",
+            "Requirement already satisfied: h11<0.15,>=0.13 in /usr/local/lib/python3.10/dist-packages (from httpcore==1.*->httpx<1,>=0.23.0->openai) (0.14.0)\n",
+            "Requirement already satisfied: annotated-types>=0.4.0 in /usr/local/lib/python3.10/dist-packages (from pydantic<3,>=1.9.0->openai) (0.6.0)\n",
+            "Requirement already satisfied: pydantic-core==2.16.2 in /usr/local/lib/python3.10/dist-packages (from pydantic<3,>=1.9.0->openai) (2.16.2)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "openai.api_key = \"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\""
+      ],
+      "metadata": {
+        "id": "-hlHK_Ik2Wcb"
+      },
+      "execution_count": 13,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "start_sequence = \"\\nTrainer:\"\n",
+        "restart_sequence = \"\\nClient: \""
+      ],
+      "metadata": {
+        "id": "BCcty_tj2dY8"
+      },
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "prompt = \"The following is a conversation with a FITNESS trainer. The trainer is knowledgeable, helpful, and dedicated to helping you reach your fitness goals.\\n\\nClient: Hi, I need some guidance on my workout routine.\\nTrainer: \"\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "vD1TQ9r92h3D"
+      },
+      "execution_count": 15,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def openai_create(prompt):\n",
+        "    response = openai.Completion.create(\n",
+        "        model=\"gpt-3.5-turbo-instruct\",\n",
+        "        prompt=prompt,\n",
+        "        temperature=0.2,\n",
+        "        max_tokens=150,\n",
+        "        top_p=1,\n",
+        "        frequency_penalty=0.2,\n",
+        "        presence_penalty=0.6,\n",
+        "        stop=[\" Client:\", \" Trainer:\"]\n",
+        "    )\n",
+        "    return response.choices[0].text"
+      ],
+      "metadata": {
+        "id": "x6bqgKls2q8_"
+      },
+      "execution_count": 16,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def chatgpt_clone(input, history, client_info):\n",
+        "    history = history or []\n",
+        "    s = list(sum(history, ()))\n",
+        "    s.append(input)\n",
+        "    inp = ' '.join(s)\n",
+        "    inp += \"\\nClient Info: \" + client_info\n",
+        "    output = openai_create(inp)\n",
+        "    history.append((input, output))\n",
+        "    return history, history\n"
+      ],
+      "metadata": {
+        "id": "l_yhGU702uSx"
+      },
+      "execution_count": 17,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def search_videos(query, max_results=5):\n",
+        "    try:\n",
+        "        # Perform a YouTube search\n",
+        "        results = YoutubeSearch(query, max_results=max_results).to_dict()\n",
+        "\n",
+        "        # Retrieve the video links\n",
+        "        video_links = [f\"https://www.youtube.com/watch?v={result['id']}\" for result in results]\n",
+        "\n",
+        "        return video_links\n",
+        "    except Exception as e:\n",
+        "        print(\"An error occurred:\", str(e))\n",
+        "        return []"
+      ],
+      "metadata": {
+        "id": "l5RQ0Yje2x_J"
+      },
+      "execution_count": 18,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def get_video_links(query):\n",
+        "    video_links = search_videos(query)\n",
+        "    return \"\\n\".join(video_links)\n",
+        "\n",
+        "# Function to handle the chat interface\n",
+        "def chat_interface(message, client_info, video_query):\n",
+        "    if message.strip() == \"\" and video_query.strip() == \"\":\n",
+        "        # Return empty outputs if both queries are empty\n",
+        "        return \"\", \"\"\n",
+        "\n",
+        "    chatbot_output = \"\"\n",
+        "    video_links = \"\"\n",
+        "\n",
+        "    if message.strip() != \"\":\n",
+        "        # Generate chatbot response using OpenAI\n",
+        "        response = openai_create(message)\n",
+        "        chatbot_output = response.split(\"Trainer:\")[-1].strip()\n",
+        "\n",
+        "    if video_query.strip() != \"\":\n",
+        "        # Get video links based on the query\n",
+        "        video_links = get_video_links(video_query)\n",
+        "\n",
+        "    return chatbot_output, video_links\n",
+        "\n",
+        "# Define example prompts, client info examples, and video query examples\n",
+        "example_prompts = [\n",
+        "    \"What are some good exercises for weight loss?\",\n",
+        "    \"How many calories should I consume in a day?\",\n",
+        "    \"Can you recommend a workout routine for beginners?\"\n",
+        "]\n",
+        "client_info_examples = [\n",
+        "    \"I am 5 feet 9 inches, 20 years old, and weigh 95 kg\",\n",
+        "    \"I have a shoulder injury\",\n",
+        "    \"I am a male and a beginner\"\n",
+        "]\n",
+        "video_query_examples = [\n",
+        "    \"Chest exercises video\",\n",
+        "    \"Diet plan for bulking\",\n",
+        "    \"Phonk x Aggressive Music for Gym Exercises\"\n",
+        "]\n",
+        "\n",
+        "# Create the Gradio interface\n",
+        "iface = gradio.Interface(\n",
+        "    fn=chat_interface,\n",
+        "    inputs=[\n",
+        "        components.Textbox(label=\"Talk With Fit\", lines=5, placeholder=\"Enter your message\"),\n",
+        "        components.Textbox(label=\"Client Info\", placeholder=\"Enter your height, age, weight, etc For better Personalized results\"),\n",
+        "        components.Textbox(label=\"Search for Video\", placeholder=\"Want to look up a video that explains more?\")\n",
+        "    ],\n",
+        "    outputs=[\n",
+        "        components.Textbox(label=\"Chatbot Response\", lines=5),\n",
+        "        components.Textbox(label=\"Video Link\", lines=5)\n",
+        "    ],\n",
+        "    title=\"FitBot - Your Personal Gym Trainer\",\n",
+        "    theme=\"default\",\n",
+        "    examples=[\n",
+        "        [example_prompt, client_info_example, video_query_example]\n",
+        "        for example_prompt, client_info_example, video_query_example in zip(\n",
+        "            example_prompts, client_info_examples, video_query_examples\n",
+        "        )\n",
+        "    ]\n",
+        ")\n",
+        "\n",
+        "# Launch the interface\n",
+        "iface.launch(inline=False, share=True)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tYrfRe1J22tW",
+        "outputId": "77701221-1ca5-4368-ccbb-0e47b6e1e15c"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Colab notebook detected. To show errors in colab notebook, set debug=True in launch()\n",
+            "Running on public URL: https://b307bc8edb10ee23d1.gradio.live\n",
+            "\n",
+            "This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to Spaces (https://huggingface.co/spaces)\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": []
+          },
+          "metadata": {},
+          "execution_count": 19
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "7NeughxI29hu"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
